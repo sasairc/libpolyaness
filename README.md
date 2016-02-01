@@ -109,3 +109,8 @@ pt->record[3]->key[1] = quote, pt->record[3]->value[1] = お疲れさまでし�
 ## License
 
 [MIT](https://github.com/sasairc/libncipher/blob/master/LICENSE)
+
+
+## Author
+
+sasairc (https://github.com/sasairc)

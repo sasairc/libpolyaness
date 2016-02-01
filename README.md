@@ -44,7 +44,7 @@ speaker:WiiFitU トレーナー<TAB>quote:そのまま少し後ろに伸展し�
 ### Source code
 
 ```c
-"./polyaness.h"
+#include "./polyaness.h"
 #include <stdio.h>
 
 int main(void)

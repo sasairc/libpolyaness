@@ -30,17 +30,21 @@
 
 #define BUFLEN  4096
 
-#define LF  0x0a
-#define TAB 0x09
-#define COL 0x3a
+#define LF      0x0a
+#define TAB     0x09
+#define COL     0x3a
 
 typedef unsigned char   uchar;
 typedef unsigned int    uint;
 
 int count_keys(const unsigned char* str);
+int add_data_polyaness(int record, int keys, const unsigned char* str, polyaness_t*** polyaness);
 
 int init_polyaness(FILE* fp, polyaness_t** polyaness)
 {
+    if (fp == NULL)
+        return -1;
+
     uint            i       = 0,
                     code    = 0,
                     recs    = 0;
@@ -76,12 +80,19 @@ int init_polyaness(FILE* fp, polyaness_t** polyaness)
     return 0;
 
 ERR:
-    if (pt != NULL) {
+
+    if (pt->record != NULL) {
         while (i >= 0) {
-            free(pt->record[i]);
-            pt->record = NULL;
+            if (pt->record[i] != NULL) {
+                free(pt->record[i]);
+                pt->record[i] = NULL;
+            }
             i--;
         }
+        free(pt->record);
+        pt->record = NULL;
+    }
+    if (pt != NULL) {
         free(pt);
         pt = NULL;
     }
@@ -91,9 +102,11 @@ ERR:
 
 int parse_polyaness(FILE* fp, polyaness_t** polyaness)
 {
+    if (fp == NULL || *polyaness == NULL)
+        return -1;
+
     uint            i       = 0,
                     code    = 0,
-                    keys    = 0,
                     recs    = 0;
 
     uchar*          buf     = NULL;
@@ -103,20 +116,24 @@ int parse_polyaness(FILE* fp, polyaness_t** polyaness)
 
     polyaness_t*    pt      = NULL;
 
-    buf = (uchar*)
-        malloc(sizeof(uchar) * x_bufl);
+    if ((buf = (uchar*)
+            malloc(sizeof(uchar) * x_bufl)) == NULL)
+        return -1;
+
     rewind(fp);
     while ((code = fgetc(fp)) != EOF) {
         if (code == LF) {
-            keys = count_keys(buf);
-            add_data_polyaness(recs, keys, buf, &polyaness);
+            if (add_data_polyaness(recs, count_keys(buf), buf, &polyaness) < 0)
+                goto ERR;
             memset(buf, '\0', strlen(buf));
             recs++;
-            keys = len = 0;
+            len = 0;
         } else {
             if (len == (x_bufl - 1)) {
                 x_bufl += BUFLEN;
-                buf = (uchar*)realloc(buf, sizeof(uchar) * x_bufl);
+                if ((buf = (uchar*)
+                        realloc(buf, sizeof(uchar) * x_bufl)) == NULL)
+                    goto ERR;
             }
             buf[len] = code;
             len++;
@@ -125,6 +142,15 @@ int parse_polyaness(FILE* fp, polyaness_t** polyaness)
     free(buf);
 
     return 0;
+
+ERR:
+
+    if (buf != NULL) {
+        free(buf);
+        buf = NULL;
+    }
+
+    return -1;
 }
 
 int count_keys(const uchar* str)
@@ -151,10 +177,9 @@ int add_data_polyaness(int record, int keys, const uchar* str, polyaness_t*** po
         malloc(sizeof(uchar*) * keys);
     (*(*polyaness))->record[record]->value = (uchar**)
         malloc(sizeof(uchar*) * keys);
-
     
     if ((*(*polyaness))->record[record]->key == NULL ||
-        (*(*polyaness))->record[record]->key == NULL)
+        (*(*polyaness))->record[record]->value == NULL)
         return -1;
         
     (*(*polyaness))->record[record]->keys = keys;
@@ -162,6 +187,7 @@ int add_data_polyaness(int record, int keys, const uchar* str, polyaness_t*** po
         if (str[head] == COL) {
             (*(*polyaness))->record[record]->key[i] = (uchar*)
                 malloc(sizeof(uchar) * (head - tail + 1));
+
             memcpy((*(*polyaness))->record[record]->key[i],
                     str + tail, head - tail);
             (*(*polyaness))->record[record]->key[i][head - tail + 1] = '\0';
@@ -170,6 +196,7 @@ int add_data_polyaness(int record, int keys, const uchar* str, polyaness_t*** po
         } else if (str[head] == TAB || str[head] == '\0') {
             (*(*polyaness))->record[record]->value[i] = (uchar*)
                 malloc(sizeof(uchar) * (head - tail + 1));
+
             memcpy((*(*polyaness))->record[record]->value[i],
                     str + tail, head - tail);
             (*(*polyaness))->record[record]->value[i][head - tail + 1] = '\0';
@@ -210,11 +237,11 @@ void release_polyaness(polyaness_t* polyaness)
             free(polyaness->record[i]);
         i++;
     }
-
     if (polyaness->record != NULL)
         free(polyaness->record);
 
     free(polyaness);
+    polyaness = NULL;
 
     return;
 }

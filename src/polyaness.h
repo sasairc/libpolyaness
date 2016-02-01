@@ -40,7 +40,6 @@ typedef struct POLYANESS_T {
 
 extern int init_polyaness(FILE* fp, polyaness_t** polyaness);
 extern int parse_polyaness(FILE* fp, polyaness_t** polyaness);
-extern int add_data_polyaness(int record, int keys, const unsigned char* str, polyaness_t*** polyaness);
 extern void release_polyaness(polyaness_t* polyaness);
 
 /* POLYANESS_H */

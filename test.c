@@ -2,7 +2,7 @@
  * test.c
  */
 
-#include "src/polyaness.h"
+#include "./src/polyaness.h"
 #include <stdio.h>
 
 int main(void)
@@ -14,10 +14,21 @@ int main(void)
 
     polyaness_t*    pt  = NULL;
 
-    fp = fopen("test.txt", "r");
+    if ((fp = fopen("test.txt", "r")) == NULL)
+        return 1;
 
-    init_polyaness(fp, &pt);
-    parse_polyaness(fp, &pt);
+    if (init_polyaness(fp, &pt) < 0) {
+        fclose(fp);
+
+        return 2;
+    }
+
+    if (parse_polyaness(fp, &pt) < 0) {
+        fclose(fp);
+        release_polyaness(pt);
+        
+        return 3;
+    }
     fclose(fp);
 
     fprintf(stdout, "pt->recs = %d\n", pt->recs);

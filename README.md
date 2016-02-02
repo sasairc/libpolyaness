@@ -6,7 +6,7 @@ polyanessもといLTSVパーサ。
 ## Usage
 
 ```c
-#include <stdio.h>
+#include <polyaness.h>
 
 typedef struct POLYANESS_CELL {
     unsigned int            keys;
@@ -54,7 +54,7 @@ speaker:WiiFitU トレーナー<TAB>quote:そのまま少し後ろに伸展し�
  * test.c
  */
 
-#include "./src/polyaness.h"
+#include "./polyaness.h"
 #include <stdio.h>
 
 int main(void)

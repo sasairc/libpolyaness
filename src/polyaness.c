@@ -210,6 +210,28 @@ int add_data_polyaness(int record, int keys, const uchar* str, polyaness_t*** po
     return 0;
 }
 
+char* get_polyaness(const unsigned char* key, unsigned int record, polyaness_t** polyaness)
+{
+    if (polyaness == NULL   ||
+            key == NULL     ||
+            (*polyaness)->recs < record)
+        return NULL;
+
+    uint    i       = 0;
+    
+    uchar*  match   = NULL;
+
+    while (i < (*polyaness)->record[record]->keys) {
+        if (strcmp((*polyaness)->record[record]->key[i], key) == 0) {
+            match = (*polyaness)->record[record]->value[i];
+            break;
+        }
+        i++;
+    }
+
+    return match;
+}
+
 void release_polyaness(polyaness_t* polyaness)
 {
     if (polyaness == NULL)

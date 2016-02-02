@@ -21,12 +21,15 @@ typedef struct POLYANESS_T {
 
 int init_polyaness(FILE* fp, polyaness_t** polyaness);
 int parse_polyaness(FILE* fp, polyaness_t** polyaness);
+char* get_polyaness(const unsigned char* key, unsigned int record, polyaness_t** polyaness);
 void release_polyaness(polyaness_t* polyaness);
+
+
 ```
 
 ## Example
 
-### LTSV file (text.txt)
+#### LTSV file (text.txt)
 
 ```text
 filename:test.txt<TAB>original_author:keepoff07<TAB>ltsv_author:844196
@@ -39,22 +42,32 @@ speaker:WiiFitU トレーナー<TAB>quote:きれいな動きです。とても�
 speaker:WiiFitU トレーナー<TAB>quote:この時、腰もいっしょに動かすことを意識しましょう。
 speaker:WiiFitU トレーナー<TAB>quote:そのままの姿勢で、ゆっくり呼吸しましょう。
 speaker:WiiFitU トレーナー<TAB>quote:そのまま少し後ろに伸展します。
+:
+:
+:
 ```
 
-### Source code
+#### Source code
 
 ```c
+/*
+ * test.c
+ */
+
 #include "./polyaness.h"
 #include <stdio.h>
 
 int main(void)
 {
-    int             i   = 0,
-                    j   = 0;
+    int             i       = 0,
+                    j       = 0;
 
-    FILE*           fp  = NULL;
+    char*           speaker = NULL,
+        *           quote   = NULL;
 
-    polyaness_t*    pt  = NULL;
+    FILE*           fp      = NULL;
+
+    polyaness_t*    pt      = NULL;
 
     if ((fp = fopen("test.txt", "r")) == NULL)
         return 1;
@@ -72,7 +85,7 @@ int main(void)
     }
     fclose(fp);
 
-    fprintf(stdout, "pt->recs = %d\n", pt->recs);
+    fprintf(stdout, "*** pt->recs = %d ***\n", pt->recs);
     while (i < pt->recs) {
         j = 0;
         while (j < pt->record[i]->keys) {
@@ -83,17 +96,27 @@ int main(void)
         }
         i++;
     }
+    i = 0;
+    while (i < pt->recs) {
+        speaker = get_polyaness("speaker", i, &pt);
+        quote = get_polyaness("quote", i, &pt);
+        fprintf(stdout, "%s「%s」\n",
+                speaker, quote);
+
+        speaker = quote = NULL;
+        i++;
+    }
     release_polyaness(pt);
 
     return 0;
 }
 ```
 
-### Result
+#### Result
 
 ```
-% ./sample | head
-pt->recs = 49
+% ./sample | headtail --pretty -n 10
+*** pt->recs = 49 ***
 pt->record[0]->key[0] = filename, pt->record[0]->value[0] = test.txt
 pt->record[0]->key[1] = original_author, pt->record[0]->value[1] = keepoff07
 pt->record[0]->key[2] = ltsv_author, pt->record[0]->value[2] = 844196
@@ -103,7 +126,26 @@ pt->record[2]->key[0] = speaker, pt->record[2]->value[0] = WiiFitU トレーナ�
 pt->record[2]->key[1] = quote, pt->record[2]->value[1] = お尻を突き出さないように、まっすぐ立ちます。
 pt->record[3]->key[0] = speaker, pt->record[3]->value[0] = WiiFitU トレーナー
 pt->record[3]->key[1] = quote, pt->record[3]->value[1] = お疲れさまでした。毎日つづけて、身体のゆがみを改善しましょう。
+ :
+ :
+ :
+WiiFitU トレーナー「笛にあわせて、すばやく足と上半身をVの字に起こしましょう。」
+WiiFitU トレーナー「難しければ、鼻から吸って口から吐きましょう。」
+WiiFitU トレーナー「背筋がまっすぐになるイメージを思い浮かべましょう。」
+WiiFitU トレーナー「背骨を伸ばすことで、自律神経を整えます。」
+WiiFitU トレーナー「鼻から吸って、鼻から吐いて。」
+WiiFitU トレーナー「毎日つづけて、身体を引きしめましょう。」
+WiiFitU トレーナー「理想の体型を意識して！」
+WiiFitU トレーナー「両手を天井に向け、ひざを曲げます。」
+WiiFitU トレーナー「力を入れる時に、呼吸を止めないようにしましょう。」
+WiiFitU トレーナー「腕が傾いてます。まっすぐ上に向けましょう。」
 ```
+
+
+## Ref
+
+* [844196/polyaness - Polyaness 辞書ファイル標準仕様](https://github.com/844196/polyaness/blob/master/dictionary_spec.md)
+* [keepoff07/trainer_say.txt - from WiiFitU](https://gist.github.com/keepoff07/b16a61141c1fd8a81c45)
 
 
 ## License

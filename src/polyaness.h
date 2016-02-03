@@ -28,19 +28,19 @@
 #include <stdio.h>
 
 typedef struct POLYANESS_CELL {
-    unsigned int            keys;
-    unsigned char**         key;
-    unsigned char**         value;
+    int     keys;
+    char**  key;
+    char**  value;
 } polyaness_cell;
 
 typedef struct POLYANESS_T {
-    unsigned int            recs;
+    int                     recs;
     struct POLYANESS_CELL** record;
 } polyaness_t;
 
 extern int init_polyaness(FILE* fp, polyaness_t** polyaness);
 extern int parse_polyaness(FILE* fp, polyaness_t** polyaness);
-extern char* get_polyaness(const unsigned char* key, unsigned int record, polyaness_t** polyaness);
+extern char* get_polyaness(const char* key, int record, polyaness_t** polyaness);
 extern void release_polyaness(polyaness_t* polyaness);
 
 /* POLYANESS_H */

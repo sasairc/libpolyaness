@@ -1,0 +1,10 @@
+language: c
+compiler:
+    - gcc
+    - clang
+script:
+    - export CC="$CC"
+    - make CC="$CC"
+    - ./example test.txt
+    - ./example yasuna-quotes-with-polyaness
+    - make clean

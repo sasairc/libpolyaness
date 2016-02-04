@@ -1,11 +1,11 @@
 /*
- * example.c
+ * test.c
  */
 
 #include "./polyaness.h"
 #include <stdio.h>
 
-int main(void)
+int main(int argc, char* argv[])
 {
     int             i       = 0,
                     j       = 0;
@@ -17,7 +17,10 @@ int main(void)
 
     polyaness_t*    pt      = NULL;
 
-    if ((fp = fopen("test.txt", "r")) == NULL)
+    if (argc <= 1)
+        return 1;
+
+    if ((fp = fopen(argv[1], "r")) == NULL)
         return 1;
 
     if (init_polyaness(fp, &pt) < 0) {

@@ -1,6 +1,9 @@
 libpolyaness
 ===
 
+[![license](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/sasairc/libpolyaness/master/LICENSE)
+[![build](https://img.shields.io/travis/sasairc/libpolyaness.svg?style=flat)](https://travis-ci.org/sasairc/libpolyaness)
+
 polyanessもといLTSVパーサ。
 
 ## Usage

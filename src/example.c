@@ -1,8 +1,8 @@
 /*
- * test.c
+ * example.c
  */
 
-#include "./src/polyaness.h"
+#include "./polyaness.h"
 #include <stdio.h>
 
 int main(void)

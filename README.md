@@ -22,10 +22,10 @@ typedef struct POLYANESS_T {
     struct POLYANESS_CELL** record;
 } polyaness_t;
 
-extern int init_polyaness(FILE* fp, polyaness_t** polyaness);
-extern int parse_polyaness(FILE* fp, polyaness_t** polyaness);
-extern char* get_polyaness(const char* key, int record, polyaness_t** polyaness);
-extern void release_polyaness(polyaness_t* polyaness);
+int init_polyaness(FILE* fp, polyaness_t** polyaness);
+int parse_polyaness(FILE* fp, polyaness_t** polyaness);
+char* get_polyaness(const char* key, int record, polyaness_t** polyaness);
+void release_polyaness(polyaness_t* polyaness);
 ```
 
 ## Example

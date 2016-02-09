@@ -5,6 +5,6 @@ compiler:
 script:
     - export CC="$CC"
     - make CC="$CC"
-    - ./example test.txt
-    - ./example yasuna-quotes-with-polyaness
+    - ./example 1 test.txt
+    - ./example 0 yasuna-quotes-with-polyaness
     - make clean

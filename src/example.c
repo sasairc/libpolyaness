@@ -4,6 +4,7 @@
 
 #include "./polyaness.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char* argv[])
 {
@@ -17,18 +18,18 @@ int main(int argc, char* argv[])
 
     polyaness_t*    pt      = NULL;
 
-    if (argc <= 1)
+    if (argc <= 2)
         return 1;
 
-    if ((fp = fopen(argv[1], "r")) == NULL)
+    if ((fp = fopen(argv[2], "r")) == NULL)
         return 1;
 
-    if (init_polyaness(fp, &pt) < 0) {
+    if (init_polyaness(fp, atoi(argv[1]), &pt) < 0) {
         fclose(fp);
 
         return 2;
     }
-    if (parse_polyaness(fp, &pt) < 0) {
+    if (parse_polyaness(fp, atoi(argv[1]), &pt) < 0) {
         fclose(fp);
         release_polyaness(pt);
         

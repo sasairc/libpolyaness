@@ -22,8 +22,8 @@ typedef struct POLYANESS_T {
     struct POLYANESS_CELL** record;
 } polyaness_t;
 
-int init_polyaness(FILE* fp, polyaness_t** polyaness);
-int parse_polyaness(FILE* fp, polyaness_t** polyaness);
+int init_polyaness(FILE* fp, int offset, polyaness_t** polyaness);
+int parse_polyaness(FILE* fp, int offset, polyaness_t** polyaness);
 char* get_polyaness(const char* key, int record, polyaness_t** polyaness);
 void release_polyaness(polyaness_t* polyaness);
 ```
@@ -73,12 +73,12 @@ int main(void)
     if ((fp = fopen("test.txt", "r")) == NULL)
         return 1;
 
-    if (init_polyaness(fp, &pt) < 0) {
+    if (init_polyaness(fp, 0, &pt) < 0) {
         fclose(fp);
 
         return 2;
     }
-    if (parse_polyaness(fp, &pt) < 0) {
+    if (parse_polyaness(fp, 0, &pt) < 0) {
         fclose(fp);
         release_polyaness(pt);
         

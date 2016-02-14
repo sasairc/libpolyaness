@@ -34,9 +34,11 @@
 #define TAB     0x09    /* \t */
 #define COL     0x3a    /* :  */
 
-int strcmp_lite(const char* str1, const char* str2);
 int count_keys(const char* str);
 int add_data_polyaness(int record, int keys, const char* str, polyaness_t*** polyaness);
+
+/* misc functions */
+static int strcmp_lite(const char* str1, const char* str2);
 
 int init_polyaness(FILE* fp, int offset, polyaness_t** polyaness)
 {
@@ -284,8 +286,11 @@ void release_polyaness(polyaness_t* polyaness)
     return;
 }
 
+/*
+ * misc functions
+ */
 
-int strcmp_lite(const char* str1, const char* str2)
+static int strcmp_lite(const char* str1, const char* str2)
 {
     if (str1 == NULL || str2 == NULL)
         return -1;

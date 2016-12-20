@@ -6,7 +6,7 @@ before_install:
     - sudo apt-get update
     - sudo apt-get install tree
 script:
-    - export CC="$CC" TEST_PREFIX="`pwd/test_prefix`"
+    - export CC="$CC" TEST_PREFIX="`pwd`/test_prefix"
     - make CC="$CC" PREFIX="$TEST_PREFIX"
     - make CC="$CC" PREFIX="$TEST_PREFIX" install
     - tree "$TEST_PREFIX"

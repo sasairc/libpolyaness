@@ -1,31 +1,54 @@
 #
-#    Makefile
+#    Makefile for libpolyaness
 #
 
-SRCS	= $(wildcard *.c)
-OBJS	= $(SRCS:.c=.o)
+VERSION		= 0
+PATCHLEVEL	= 0
+SUBLEVEL	= 1
+LINKERNAME	= libpolyaness.so
+SONAME		= $(LINKERNAME).$(VERSION)
+REALNAME	= $(LINKERNAME).$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)
 
-all: $(TARGET) $(OBJS)
+SRCS		= $(wildcard *.c)
+OBJS		= $(SRCS:.c=.o)
 
-$(TARGET): $(OBJS)
+DEFCFLAGS	= -fPIC
+DEFLDFLAGS	= -shared		\
+		  -Wl,-soname=$(SONAME)
+
+all: $(REALNAME)
+
+$(REALNAME): $(OBJS)
 ifeq ($(CMDLINE), 0)
 	@echo "  BUILD   $@"
-	@$(CC) $(LDFLAGS) $^ -o $@
+	@$(CC) $(LDFLAGS) $^ -o $@ $(DEFLDFLAGS)
 else
-	$(CC) $(LDFLAGS) $^ -o $@
+	$(CC) $(LDFLAGS) $^ -o $@ $(DEFLDFLAGS)
 endif
 
 %.o: %.c
 ifeq ($(CMDLINE), 0)
 	@echo "  CC      $@"
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@ $(DEFCFLAGS)
 else
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ $(DEFCFLAGS)
 endif
 
+install-lib: $(REALNAME)
+	install -pd $(LIBDIR)
+	install -pm 755 $(REALNAME) $(LIBDIR)/
+	ln -sf $(LIBDIR)/$(REALNAME) $(LIBDIR)/$(SONAME)
+	ln -sf $(LIBDIR)/$(REALNAME) $(LIBDIR)/$(LINKERNAME)
+
+install-header: polyaness.h
+	install -pd $(INCLUDEDIR)
+	install -pm 644 polyaness.h $(INCLUDEDIR)/
+
 clean:
+	-$(RM) -f $(REALNAME)
 	-$(RM) -f $(OBJS)
-	-$(RM) -f $(TARGET)
 
 .PHONY: all		\
+	install-lib	\
+	install-header	\
 	clean

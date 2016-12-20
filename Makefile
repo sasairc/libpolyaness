@@ -1,18 +1,29 @@
 #
-#    Makefile for yasuna
+#    Makefile for libpolyaness
 #
 
-TARGET	= ../example
-MAKE	:= make
-CC	:= cc
-RM	:= rm
-CFLAGS	:= -O2 -g -Wall
-LDFLAGS	:=
-CMDLINE	:= 0
+PREFIX     := /usr/local
+LIBDIR     := $(PREFIX)/lib
+INCLUDEDIR := $(PREFIX)/include
+MAKE       := make
+CC         := cc
+RM         := rm
+CFLAGS     := -O2 -g
+LDFLAGS    :=
+CMDLINE    := 0
 export
 
 all clean:
 	@$(MAKE) -C ./src	$@
 
-.PHONY:	all			\
+install-lib install-header:
+	@$(MAKE) -C ./src	$@
+
+install: install-lib	\
+ 	 install-header
+
+.PHONY: all		\
+ 	install		\
+	install-lib	\
+	install-header	\
 	clean

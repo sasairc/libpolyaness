@@ -52,10 +52,10 @@ speaker:WiiFitU トレーナー<TAB>quote:そのまま少し後ろに伸展し�
 
 ```c
 /*
- * test.c
+ * example.c
  */
 
-#include "./polyaness.h"
+#include <polyaness.h>
 #include <stdio.h>
 
 int main(void)
@@ -116,7 +116,8 @@ int main(void)
 #### Result
 
 ```
-% ./sample | headtail --pretty -n 10
+% gcc example.c -o example -lpolyaness
+% ./exsample | headtail --pretty -n 10
 *** pt->recs = 49 ***
 pt->record[0]->key[0] = filename, pt->record[0]->value[0] = test.txt
 pt->record[0]->key[1] = original_author, pt->record[0]->value[1] = keepoff07

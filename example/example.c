@@ -1,12 +1,11 @@
 /*
- * test.c
+ * example.c
  */
 
-#include "./polyaness.h"
+#include <polyaness.h>
 #include <stdio.h>
-#include <stdlib.h>
 
-int main(int argc, char* argv[])
+int main(void)
 {
     int             i       = 0,
                     j       = 0;
@@ -18,18 +17,15 @@ int main(int argc, char* argv[])
 
     polyaness_t*    pt      = NULL;
 
-    if (argc <= 2)
+    if ((fp = fopen("test.txt", "r")) == NULL)
         return 1;
 
-    if ((fp = fopen(argv[2], "r")) == NULL)
-        return 1;
-
-    if (init_polyaness(fp, atoi(argv[1]), &pt) < 0) {
+    if (init_polyaness(fp, 0, &pt) < 0) {
         fclose(fp);
 
         return 2;
     }
-    if (parse_polyaness(fp, atoi(argv[1]), &pt) < 0) {
+    if (parse_polyaness(fp, 0, &pt) < 0) {
         fclose(fp);
         release_polyaness(pt);
         

@@ -1,5 +1,5 @@
 /*
- * polyaness - standard polyaness parse library for C.
+ * libpolyaness - standard polyaness parse library for C.
  * 
  * Copyright (c) 2016 sasairc
  *
@@ -20,6 +20,16 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
  * OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * libpolyaness - standard polyaness parse library for C.
+ *
+ * Copyright (c) 2017 sasairc
+ * This work is free. You can redistribute it and/or modify it under the
+ * terms of the Do What The Fuck You Want To Public License, Version 2,
+ * as published by Sam Hocevar.HocevarHocevar See the COPYING file or http://www.wtfpl.net/
+ * for more details.
  */
 
 #ifndef POLYANESS_H

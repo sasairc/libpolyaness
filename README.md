@@ -1,7 +1,7 @@
 libpolyaness
 ===
 
-[![license](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/sasairc/libpolyaness/master/LICENSE)
+[![license](https://img.shields.io/badge/License-MIT%20or%20WTFPL2-blue.svg?style=flat)](https://raw.githubusercontent.com/sasairc/libpolyaness/master/LICENSE)
 [![build](https://img.shields.io/travis/sasairc/libpolyaness.svg?style=flat)](https://travis-ci.org/sasairc/libpolyaness)
 
 polyanessもといLTSVパーサ。
@@ -152,7 +152,9 @@ WiiFitU トレーナー「腕が傾いてます。まっすぐ上に向けまし
 
 ## License
 
-[MIT](https://github.com/sasairc/libncipher/blob/master/LICENSE)
+Dual licensed under the MIT or WTFPL Version 2.
+
+See also [LICENSE](https://github.com/sasairc/libncipher/blob/master/LICENSE)
 
 
 ## Author

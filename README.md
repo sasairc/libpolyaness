@@ -154,7 +154,7 @@ WiiFitU トレーナー「腕が傾いてます。まっすぐ上に向けまし
 
 Dual licensed under the MIT or WTFPL Version 2.
 
-See also [LICENSE](https://github.com/sasairc/libncipher/blob/master/LICENSE)
+See also [LICENSE](https://raw.githubusercontent.com/sasairc/libpolyaness/master/LICENSE)
 
 
 ## Author

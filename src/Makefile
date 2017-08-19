@@ -2,16 +2,14 @@
 #    Makefile for libpolyaness
 #
 
-VERSION		= 0
-PATCHLEVEL	= 1
-SUBLEVEL	= 1
+VERSION		= 1
+PATCHLEVEL	= 0
+SUBLEVEL	= 0
 LINKERNAME	= libpolyaness.so
 SONAME		= $(LINKERNAME).$(VERSION)
 REALNAME	= $(LINKERNAME).$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)
-
 SRCS		= $(wildcard *.c)
 OBJS		= $(SRCS:.c=.o)
-
 DEFCFLAGS	= -fPIC
 DEFLDFLAGS	= -shared		\
 		  -Wl,-soname=$(SONAME)

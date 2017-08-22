@@ -18,7 +18,7 @@ all: $(REALNAME)
 
 $(REALNAME): $(OBJS)
 ifeq ($(CMDLINE), 0)
-	@echo "  BUILD   $@"
+	@echo "  CCLD    $@"
 	@$(CC) $(LDFLAGS) $^ -o $@ $(DEFLDFLAGS)
 else
 	$(CC) $(LDFLAGS) $^ -o $@ $(DEFLDFLAGS)

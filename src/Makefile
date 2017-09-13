@@ -2,21 +2,39 @@
 #    Makefile for libpolyaness
 #
 
+LIBNAME		= libpolyaness
 VERSION		= 1
 PATCHLEVEL	= 0
 SUBLEVEL	= 0
-LINKERNAME	= libpolyaness.so
-SONAME		= $(LINKERNAME).$(VERSION)
-REALNAME	= $(LINKERNAME).$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)
+VERSIONSTR	= $(VERSION).$(PATCHLEVEL).$(SUBLEVEL)
+
 SRCS		= $(wildcard *.c)
 OBJS		= $(SRCS:.c=.o)
 DEFCFLAGS	= -fPIC
+ifeq ($(shell uname), Linux)
+LINKERNAME	= $(LIBNAME).so
 DEFLDFLAGS	= -shared		\
-		  -Wl,-soname=$(SONAME)
+		  -Wl,-soname=$(LINKERNAME).$(VERSION)
+# for Linux
+endif
+ifeq ($(shell uname), Darwin)
+LINKERNAME	= $(LIBNAME).dylib
+DEFLDFLAGS 	= -dynamiclib -undefined suppress -flat_namespace 	\
+		   -install_name $(LINKERNAME)				\
+		   -current_version $(VERSIONSTR)			\
+		   -compatibility_version $(VERSION).$(PATCHLEVEL)
+# for Darwin
+endif
+ifndef	LINKERNAME
+LINKERNAME	= $(LIBNAME).so
+DEFLDFLAGS	= -shared						\
+		  -Wl,-soname=$(LINKERNAME).$(VERSION)
+# for Other System
+endif
 
-all: $(REALNAME)
+all: $(LINKERNAME).$(VERSIONSTR)
 
-$(REALNAME): $(OBJS)
+$(LINKERNAME).$(VERSIONSTR): $(OBJS)
 ifeq ($(CMDLINE), 0)
 	@echo "  CCLD    $@"
 	@$(CC) $(LDFLAGS) $^ -o $@ $(DEFLDFLAGS)
@@ -32,18 +50,22 @@ else
 	$(CC) $(CFLAGS) -c $< -o $@ $(DEFCFLAGS)
 endif
 
-install-lib: $(REALNAME)
+install-lib: $(LINKERNAME).$(VERSIONSTR)
 	install -pd $(LIBDIR)
-	install -pm 755 $(REALNAME) $(LIBDIR)/
-	ln -sf $(LIBDIR)/$(REALNAME) $(LIBDIR)/$(SONAME)
-	ln -sf $(LIBDIR)/$(REALNAME) $(LIBDIR)/$(LINKERNAME)
+	install -pm 755 $(LINKERNAME).$(VERSIONSTR) $(LIBDIR)/
+	ln -sf $(LIBDIR)/$(LINKERNAME).$(VERSIONSTR) $(LIBDIR)/$(LINKERNAME).$(VERSION)
+	ln -sf $(LIBDIR)/$(LINKERNAME).$(VERSIONSTR) $(LIBDIR)/$(LINKERNAME)
+ifeq ($(shell uname), Darwin)
+	install_name_tool -change "$(LINKERNAME)" "$(LIBDIR)/$(LINKERNAME)" $(LIBDIR)/$(LINKERNAME)
+# for Darwin
+endif
 
 install-header: polyaness.h
 	install -pd $(INCLUDEDIR)
 	install -pm 644 polyaness.h $(INCLUDEDIR)/
 
 clean:
-	-$(RM) -f $(REALNAME)
+	-$(RM) -f $(LINKERNAME).$(VERSIONSTR)
 	-$(RM) -f $(OBJS)
 
 .PHONY: all		\

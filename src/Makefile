@@ -62,7 +62,7 @@ endif
 
 install-header: polyaness.h
 	install -pd $(INCLUDEDIR)
-	install -pm 644 polyaness.h $(INCLUDEDIR)/
+	install -pm 644 $< $(INCLUDEDIR)/
 
 clean:
 	-$(RM) -f $(LINKERNAME).$(VERSIONSTR)

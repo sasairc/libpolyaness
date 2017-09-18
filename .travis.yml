@@ -17,6 +17,6 @@ before_install:
 script:
     - make CC="${CC}" PREFIX="${TEST_PREFIX}"
     - make CC="${CC}" PREFIX="${TEST_PREFIX}" install
+    - make clean
     - tree "${TEST_PREFIX}"
     - rm -r "${TEST_PREFIX}"
-    - make clean
